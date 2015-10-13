@@ -319,6 +319,7 @@ Formatting:
                                 color descriptive epoch monotonic printable uid usec UTC year zone
                               Multiple -v parameters or comma separated list of format and format
                               modifiers are allowed.
+  -C, --color                 Colored output.
   -D, --dividers              Print dividers between each log buffer.
   -B, --binary                Output the log in binary.
 
@@ -569,6 +570,7 @@ int Logcat::Run(int argc, char** argv) {
           { "binary",        no_argument,       nullptr, 'B' },
           { "buffer",        required_argument, nullptr, 'b' },
           { "buffer-size",   optional_argument, nullptr, 'g' },
+          { "color",         no_argument,       nullptr, 'C' },
           { "clear",         no_argument,       nullptr, 'c' },
           { debug_str,       no_argument,       nullptr, 0 },
           { "dividers",      no_argument,       nullptr, 'D' },
@@ -598,7 +600,7 @@ int Logcat::Run(int argc, char** argv) {
         };
         // clang-format on
 
-        int c = getopt_long(argc, argv, ":cdDhLt:T:gG:sQf:r:n:v:b:BSpP:m:e:", long_options,
+        int c = getopt_long(argc, argv, ":cdDhLt:T:gG:sQf:r:n:v:b:BSpCP:m:e:", long_options,
                             &option_index);
         if (c == -1) break;
 
@@ -758,6 +760,10 @@ int Logcat::Run(int argc, char** argv) {
 
             case 'B':
                 print_binary_ = 1;
+                break;
+
+            case 'C':
+                SetLogFormat("color");
                 break;
 
             case 'f':
